@@ -21,9 +21,11 @@ class Session(Resource):
     def post(self):
         reqData = request.get_json()
 
-        data = json.loads(self.userStore.get(reqData["username"]))
-        if data is None:
-            return Session.error()
+        userData = self.userStore.get(reqData["username"])
+        if userData is None:
+            data = json.loads()
+            if data is None:
+                return Session.error()
 
         if reqData["password"] == data["password"]:
             token = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
