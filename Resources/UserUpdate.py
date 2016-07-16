@@ -20,7 +20,7 @@ class UserUpdate(Resource):
         newData = json.loads(request.get_json())
         del newData["username"]
 
-        if "password" is not in newData or "email" is not in newData:
+        if "password" not in newData or "email" not in newData:
             return {"success": False, "message": "new Password and/or email must be present"}, 400
 
         newBlob = json.dump(newData)
