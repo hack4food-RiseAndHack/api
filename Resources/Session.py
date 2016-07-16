@@ -27,6 +27,7 @@ class Session(Resource):
 
         userData = json.loads(userQuery)
 
+        token = None
         try:
             if reqData["password"] == userData["password"]:
                 token = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
@@ -35,3 +36,13 @@ class Session(Resource):
             return Session.error(), 401
 
         return {"success": True, "message": "You have logged in", "token": token}
+
+    def get(self):
+        token = request.args.get("token")
+
+        sessionData = self.sessionStore.get(token)
+        if sessionData is None:
+            return {"success": False, "message": "Not logged in"}
+
+        self.sessionStore.setex(name=token, value=sessionData, time=300)
+        return {"success": True, "message": "You are logged in", "username": sessionData}
