@@ -10,7 +10,7 @@ api = Api(app)
 
 @app.after_request
 def apply_caching(response):
-    response.headers["Access-Control-Allow-Origin"] = "http://193.219.91.103"
+    #response.headers["Access-Control-Allow-Origin"] = "http://193.219.91.103"
     return response
 
 api.add_resource(OpenTransaction, '/open')
