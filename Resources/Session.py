@@ -46,3 +46,11 @@ class Session(Resource):
 
         self.sessionStore.setex(name=token, value=sessionData, time=300)
         return {"success": True, "message": "You are logged in", "username": sessionData}
+
+    def delete(self):
+        token = request.args.get("token")
+        if token is None:
+            return {"success": False, "message": "You have to provide a token"}
+
+        self.sessionStore.delete(token)
+        return {"success": True, "message": "Logged out"}
