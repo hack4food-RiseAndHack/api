@@ -18,7 +18,7 @@ def apply_caching(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
     return response
 
-redisSessionStore = redis.StrictRedis(db=0)
+redisTransactionStore = redis.StrictRedis(db=0)
 redisUserStore = redis.StrictRedis(db=1)
 
 registerVerification = RegistrationVerification(redisUserStore)
@@ -26,7 +26,7 @@ registerVerification = RegistrationVerification(redisUserStore)
 api.add_resource(Registration, "/register",
                  resource_class_kwargs={"redis": redisUserStore, "verification": registerVerification})
 api.add_resource(OpenTransaction, '/open',
-                 resource_class_kwargs={"redis": redisSessionStore})
+                 resource_class_kwargs={"redis": redisTransactionStore})
 api.add_resource(Session, '/session')
 
 if __name__ == '__main__':

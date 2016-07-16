@@ -1,7 +1,6 @@
 import random
 import string
 
-from IPy import xrange
 from flask_restful import Resource
 from flask import request
 

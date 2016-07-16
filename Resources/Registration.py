@@ -13,8 +13,9 @@ class Registration(Resource):
     def post(self):
         json = request.get_json()
 
-        if not self.verification.verify(json):
-            return {"success": False, "message": "Invalid user data"}
+        (success, message) = self.verification.verify(json)
+        if not success:
+            return {"success": False, "message": message}
 
-        self.redis.set(name=json["username"], value=json)sele
+        self.redis.set(name=json["username"], value=json)
         return {"success": True}
