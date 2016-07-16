@@ -23,7 +23,7 @@ class Session(Resource):
 
         userQuery = self.userStore.get(reqData["username"])
         userData = None
-        if userQuery is None:
+        if userQuery is not None:
             userData = json.loads(userQuery)
             if userData is None:
                 return Session.error()
