@@ -1,5 +1,8 @@
 #!/usr/bin/env python2.7
 
+import sys
+sys.path.append('/opt/mobile-api/')
+
 import redis
 from flask import Flask
 from flask_restful import Resource, Api
