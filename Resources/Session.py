@@ -23,7 +23,7 @@ class Session(Resource):
 
         userQuery = self.userStore.get(reqData["username"])
         if userQuery is None:
-            return Session.error()
+            return Session.error(), 401
 
         userData = json.loads(userQuery)
 
@@ -32,6 +32,6 @@ class Session(Resource):
                 token = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
                 self.sessionStore.setex(name=token, value=userData["username"], time=300)
         except TypeError:
-            return Session.error()
+            return Session.error(), 401
 
         return {"success": True, "message": "You have logged in", "token": token}
