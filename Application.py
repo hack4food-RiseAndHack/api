@@ -7,8 +7,8 @@ from Resources.Session import Session
 app = Flask(__name__)
 api = Api(app)
 
-api.add_resource(OpenTransaction, '/')
-api.add_resource(Session, '/')
+api.add_resource(OpenTransaction, '/open')
+api.add_resource(Session, '/session')
 
 if __name__ == '__main__':
     app.run(debug=True)
