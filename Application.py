@@ -4,7 +4,9 @@ import redis
 
 from Resources.OpenTransaction import OpenTransaction
 from Resources.Session import Session
+from Resources.Registration import Registration
 from Domain.TransactionValidator import TransactionValidator
+from Domain.RegistrationVerification import RegistrationVerification
 
 
 app = Flask("API")
@@ -16,9 +18,15 @@ def apply_caching(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
     return response
 
-redisConnection = redis.StrictRedis()
+redisSessionStore = redis.StrictRedis(db=0)
+redisUserStore = redis.StrictRedis(db=1)
+
+registerVerification = RegistrationVerification(redisUserStore)
+
+api.add_resource(Registration, "/register",
+                 resource_class_kwargs={"redis": redisUserStore, "verification": registerVerification})
 api.add_resource(OpenTransaction, '/open',
-                 resource_class_kwargs={"redis": redisConnection})
+                 resource_class_kwargs={"redis": redisSessionStore})
 api.add_resource(Session, '/session')
 
 if __name__ == '__main__':
