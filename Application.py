@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.4
 
 from flask import Flask
 from flask_restful import Resource, Api
