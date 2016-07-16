@@ -19,5 +19,5 @@ class OpenTransaction(Resource):
             return {"success": False, "message": "Incorrect transaction"}
 
         uid = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
-        self.redis.set(name=uid, value=str(json))
+        self.redis.setex(name=uid, value=str(json), time=30)
         return {"success": True}

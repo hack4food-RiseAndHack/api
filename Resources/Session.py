@@ -21,14 +21,15 @@ class Session(Resource):
     def post(self):
         reqData = request.get_json()
 
-        userData = self.userStore.get(reqData["username"])
-        if userData is None:
-            data = json.loads()
-            if data is None:
+        userQuery = self.userStore.get(reqData["username"])
+        userData = None
+        if userQuery is None:
+            userData = json.loads(userQuery)
+            if userData is None:
                 return Session.error()
 
-        if reqData["password"] == data["password"]:
+        if reqData["password"] == userData["password"]:
             token = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
-            self.sessionStore.setex(name=token, value=data["username"], time=30)
+            self.sessionStore.setex(name=token, value=userData["username"], time=300)
 
         return {"success": True, "message": "You have logged in", "token": token}
