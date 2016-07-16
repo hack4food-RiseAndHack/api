@@ -22,14 +22,16 @@ class Session(Resource):
         reqData = request.get_json()
 
         userQuery = self.userStore.get(reqData["username"])
-        userData = None
-        if userQuery is not None:
-            userData = json.loads(userQuery)
-            if userData is None:
-                return Session.error()
+        if userQuery is None:
+            return Session.error()
 
-        if reqData["password"] == userData["password"]:
-            token = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
-            self.sessionStore.setex(name=token, value=userData["username"], time=300)
+        userData = json.loads(userQuery)
+
+        try:
+            if reqData["password"] == userData["password"]:
+                token = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
+                self.sessionStore.setex(name=token, value=userData["username"], time=300)
+        except TypeError:
+            return Session.error()
 
         return {"success": True, "message": "You have logged in", "token": token}
