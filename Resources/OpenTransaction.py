@@ -20,4 +20,4 @@ class OpenTransaction(Resource):
 
         uid = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
         self.redis.setex(name=uid, value=str(json), time=30)
-        return {"success": True}
+        return {"success": True, "uid": uid}

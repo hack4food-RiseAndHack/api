@@ -5,6 +5,7 @@ import redis
 from Resources.OpenTransaction import OpenTransaction
 from Resources.Session import Session
 from Resources.Registration import Registration
+from Resources.TransactionManage import TransactionManage
 from Domain.TransactionValidator import TransactionValidator
 from Domain.RegistrationVerification import RegistrationVerification
 
@@ -31,6 +32,8 @@ api.add_resource(OpenTransaction, '/open',
                  resource_class_kwargs={"redis": redisTransactionStore})
 api.add_resource(Session, '/session',
                  resource_class_kwargs={"userStore": redisUserStore, "sessionStore": redisSessionStore})
+api.add_resource(TransactionManage, '/transaction/<uid>',
+                 resource_class_kwargs={"sessionStore": redisSessionStore, "transactionStore": redisTransactionStore})
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")
