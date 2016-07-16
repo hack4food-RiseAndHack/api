@@ -7,4 +7,4 @@ class RegistrationVerification(object):
     def verify(self, json):
         if self.redis.get(json["username"]) is not None:
             return False, "this username already exists"
-        return True
+        return True, ""

@@ -1,5 +1,6 @@
 from flask_restful import Resource
 from flask import request
+import json
 
 
 class Registration(Resource):
@@ -11,11 +12,12 @@ class Registration(Resource):
         self.verification = verification
 
     def post(self):
-        json = request.get_json()
+        reqData = request.get_json()
 
-        (success, message) = self.verification.verify(json)
+        (success, message) = self.verification.verify(reqData)
         if not success:
             return {"success": False, "message": message}
 
-        self.redis.set(name=json["username"], value=json)
+        jDump = json.dumps(reqData)
+        self.redis.set(name=reqData["username"], value=jDump)
         return {"success": True}
