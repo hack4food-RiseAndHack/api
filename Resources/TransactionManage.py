@@ -27,4 +27,4 @@ class TransactionManage(Resource):
         if transactionData is None:
             return {"success": False, "message": "Transaction expired"}, 410
 
-        return transactionData
+        return json.dumps(transactionData)
