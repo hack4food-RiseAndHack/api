@@ -32,6 +32,8 @@ class Session(Resource):
             if reqData["password"] == userData["password"]:
                 token = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
                 self.sessionStore.setex(name=token, value=userData["username"], time=300)
+            else:
+                return Session.error(), 401
         except TypeError:
             return Session.error(), 401
 
