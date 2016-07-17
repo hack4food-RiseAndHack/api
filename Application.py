@@ -9,6 +9,7 @@ from Resources.Session import Session
 from Resources.AwaitTransaction import AwaitTransaction
 from Resources.TransactionManage import TransactionManage
 from Resources.UserManagement import UserManagement
+from Resources.TransactionVerification import TransactionVerification
 
 app = Flask("API")
 api = Api(app)
@@ -27,6 +28,10 @@ redisCompleteStore = redis.StrictRedis(db=3)
 
 registerVerification = RegistrationVerification(redisUserStore)
 
+api.add_resource(TransactionVerification, "/verify", resource_class_kwargs={
+                     "transactionStore": redisTransactionStore,
+                     "completeStore": redisCompleteStore,
+                     "sessionStore": redisSessionStore})
 api.add_resource(Registration, "/register",
                  resource_class_kwargs={"redis": redisUserStore,
                                         "verification": registerVerification})
