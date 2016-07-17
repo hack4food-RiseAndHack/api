@@ -41,6 +41,8 @@ class Session(Resource):
 
     def get(self):
         token = request.args.get("token")
+        if token is None:
+            return {"success": False, "message": "Not logged in"}
 
         sessionData = self.sessionStore.get(token)
         if sessionData is None:
