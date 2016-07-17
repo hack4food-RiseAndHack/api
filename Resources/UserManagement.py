@@ -11,15 +11,17 @@ class UserManagement(Resource):
         self.userStore = userStore
         self.sessionStore = sessionStore
 
-    def post(self, username):
+    def post(self):
         token = request.args.get('token')
-
         if token is None:
             return {"success": False, "message": "You must provide a token"}, 401
 
         username = self.sessionStore.get(token)
-        oldData = self.userStore.get(username)
-        newData = json.loads(request.get_json())
+        if username is None:
+            return {"success": False, "message": "Session expired"}, 401
+
+        oldData = json.loads(self.userStore.get(username))
+        newData = request.get_json()
 
         for key, value in newData:
             oldData[key] = value
