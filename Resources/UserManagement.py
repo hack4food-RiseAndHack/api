@@ -20,12 +20,11 @@ class UserManagement(Resource):
         username = self.sessionStore.get(token)
         oldData = self.userStore.get(username)
         newData = json.loads(request.get_json())
-        del newData["username"]
 
         for key, value in newData:
-            if key in oldData:
-                oldData[key] = value
+            oldData[key] = value
 
+        del oldData["username"]
         newBlob = json.dump(oldData)
         self.userStore.set(name=username, value=newBlob)
         return {"success": True, "message": "User updated"}
