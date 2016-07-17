@@ -36,6 +36,6 @@ class UserManagement(Resource):
         if username is None:
             return {"success": False, "message": "Not authorized"}, 401
 
-        userdata = json.load(self.userStore.get(username))
+        userdata = json.loads(self.userStore.get(username))
         del userdata["password"]
         return userdata
