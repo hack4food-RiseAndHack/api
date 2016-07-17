@@ -26,7 +26,6 @@ class Session(Resource):
             return Session.error(), 401
 
         userData = json.loads(userQuery)
-
         token = None
         try:
             if reqData["password"] == userData["password"]:
