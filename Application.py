@@ -1,15 +1,13 @@
-from flask import Flask
-from flask_restful import Resource, Api
 import redis
+from flask import Flask
+from flask_restful import Api
 
-from Resources.OpenTransaction import OpenTransaction
-from Resources.Session import Session
-from Resources.Registration import Registration
-from Resources.TransactionManage import TransactionManage
-from Resources.UserUpdate import UserUpdate
-from Domain.TransactionValidator import TransactionValidator
 from Domain.RegistrationVerification import RegistrationVerification
-
+from Resources.OpenTransaction import OpenTransaction
+from Resources.Registration import Registration
+from Resources.Session import Session
+from Resources.TransactionManage import TransactionManage
+from Resources.UserManagement import UserManagement
 
 app = Flask("API")
 api = Api(app)
@@ -35,7 +33,7 @@ api.add_resource(Session, '/session',
                  resource_class_kwargs={"userStore": redisUserStore, "sessionStore": redisSessionStore})
 api.add_resource(TransactionManage, '/transaction/<uid>',
                  resource_class_kwargs={"sessionStore": redisSessionStore, "transactionStore": redisTransactionStore})
-api.add_resource(UserUpdate, '/update',
+api.add_resource(UserManagement, '/me',
                  resource_class_kwargs={"sessionStore": redisSessionStore, "userStore": redisUserStore})
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ from flask import request
 import json
 
 
-class UserUpdate(Resource):
+class UserManagement(Resource):
     sessionStore = None
     userStore = None
 
@@ -26,3 +26,16 @@ class UserUpdate(Resource):
         newBlob = json.dump(newData)
         self.userStore.set(name=username, value=newBlob)
         return {"success": True, "message": "User updated"}
+
+    def get(self):
+        token = request.args.get("token")
+        if token is None:
+            return {"success": False, "message": "You must provide a token"}, 401
+
+        username = self.sessionStore.get(token)
+        if username is None:
+            return {"success": False, "message": "Not authorized"}, 401
+
+        userdata = json.load(self.userStore.get(username))
+        del userdata["password"]
+        return userdata
