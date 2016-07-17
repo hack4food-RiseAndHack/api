@@ -19,7 +19,6 @@ class TransactionManage(Resource):
 
         sessionData = self.sessionStore.get(token)
 
-
         if sessionData is None:
             return {"success": False, "message": "You are not logged in"}, 401
 
@@ -27,4 +26,4 @@ class TransactionManage(Resource):
         if transactionData is None:
             return {"success": False, "message": "Transaction expired"}, 410
 
-        return json.dumps(transactionData)
+        return json.loads(transactionData)
