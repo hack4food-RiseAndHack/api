@@ -17,13 +17,16 @@ class UserManagement(Resource):
         if token is None:
             return {"success": False, "message": "You must provide a token"}, 401
 
+        username = self.sessionStore.get(token)
+        oldData = self.userStore.get(username)
         newData = json.loads(request.get_json())
         del newData["username"]
 
-        if "password" not in newData or "email" not in newData:
-            return {"success": False, "message": "new Password and/or email must be present"}, 400
+        for key, value in newData:
+            if key in oldData:
+                oldData[key] = value
 
-        newBlob = json.dump(newData)
+        newBlob = json.dump(oldData)
         self.userStore.set(name=username, value=newBlob)
         return {"success": True, "message": "User updated"}
 
