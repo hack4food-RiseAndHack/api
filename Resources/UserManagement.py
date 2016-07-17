@@ -22,12 +22,13 @@ class UserManagement(Resource):
 
         oldData = json.loads(self.userStore.get(username))
         newData = request.get_json()
-        newData.pop("username", None)
+        
+        username = oldData["username"]
 
         for key, value in newData.iteritems():
             oldData[key] = value
 
-        del oldData["username"]
+        oldData["username"] = username
         newBlob = json.dumps(oldData)
         self.userStore.set(name=username, value=newBlob)
         return {"success": True, "message": "User updated"}
